@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
+    protected static ?int $navigationSort = 3; // برای محصولات
 
     protected static ?string $navigationIcon = 'heroicon-o-squares-plus';
 
@@ -55,11 +56,11 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable(),
+                Tables\Columns\TextColumn::make('id')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('category.name')->label('Category'),
-                Tables\Columns\TextColumn::make('price')->sortable(),
-                Tables\Columns\TextColumn::make('stock_quantity')->sortable(),
+                Tables\Columns\TextColumn::make('category.name')->label('Category')->sortable(),
+                Tables\Columns\TextColumn::make('price')->sortable()->toggleable(),
+                Tables\Columns\TextColumn::make('stock_quantity')->sortable()->toggleable(),
             ])
             ->filters([
                 //

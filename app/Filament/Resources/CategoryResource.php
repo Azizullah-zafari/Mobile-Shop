@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
+    protected static ?int $navigationSort = 2; // برای محصولات
+
 
     protected static ?string $navigationIcon = 'heroicon-o-folder';
 

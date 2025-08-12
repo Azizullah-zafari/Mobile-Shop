@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class CustomerResource extends Resource
 {
     protected static ?string $model = Customer::class;
+    protected static ?int $navigationSort = 4; // برای محصولات
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 

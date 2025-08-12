@@ -19,6 +19,7 @@ use Filament\Forms\Components\Select;
 class OrderItemResource extends Resource
 {
     protected static ?string $model = OrderItem::class;
+    protected static ?int $navigationSort = 5; // برای محصولات
 
     protected static ?string $navigationIcon = 'heroicon-o-ellipsis-horizontal';
 
@@ -81,9 +82,9 @@ class OrderItemResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
-            Tables\Columns\TextColumn::make('id')->sortable(),
-            Tables\Columns\TextColumn::make('order.id')->label('Order'),
-            Tables\Columns\TextColumn::make('product.name')->label('Product'),
+            Tables\Columns\TextColumn::make('id')->sortable()->searchable(),
+            Tables\Columns\TextColumn::make('order.id')->label('Order')->sortable(),
+            Tables\Columns\TextColumn::make('product.name')->label('Product')->sortable(),
             Tables\Columns\TextColumn::make('quantity')->sortable(),
 
             Tables\Columns\TextColumn::make('unit_price')->sortable(),
