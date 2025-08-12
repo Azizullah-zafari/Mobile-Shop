@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Actions\Action;
 
 class OrderResource extends Resource
 {
@@ -111,12 +112,11 @@ class OrderResource extends Resource
                     'unpaid' => 'Unpaid',
                     'paid' => 'Paid',
                 ]),
-        ])->actions([
-            Tables\Actions\EditAction::make(),
-            Tables\Actions\DeleteAction::make(),
-        ])->bulkActions([
-            Tables\Actions\DeleteBulkAction::make(),
-        ]);
+
+
+
+        ])
+            ->bulkActions([]);
     }
 
 

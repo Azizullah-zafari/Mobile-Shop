@@ -22,4 +22,23 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+    // public function cancelOrder()
+    // {
+    //     if ($this->status !== 'canceled') {
+    //         $this->status = 'canceled';
+
+    //         if (!$this->is_refunded && $this->payment_status === 'paid') {
+    //             $refundAmount = $this->total_amount;
+
+    //             $customer = $this->customer;
+    //             $customer->balance -= $refundAmount; // یا هر منطق بازپرداخت شما
+    //             $customer->save();
+
+    //             $this->refunded_amount = $refundAmount;
+    //             $this->is_refunded = true;
+    //         }
+
+    //         $this->save();
+    //     }
+    // }
 }

@@ -9,7 +9,8 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['category_id', 'name', 'description', 'price', 'stock_quantity', 'sku', 'image_url'];
+    // protected $fillable = ['category_id', 'name', 'description', 'price', 'stock_quantity', 'sku', 'image_url'];
+    protected $fillable = ['category_id', 'name', 'description', 'price', 'cost_price', 'stock_quantity', 'sku', 'image_url'];
 
     // رابطه با دسته‌بندی
     public function category()

@@ -51,9 +51,14 @@ class OrderItemResource extends Resource
                 ->reactive()
                 ->afterStateUpdated(fn(callable $set, $state, $get) => self::setTotalPrice($set, $state, $get)),
 
+            TextInput::make('cost_price')
+                ->numeric()
+                ->required(),
+
             TextInput::make('unit_price')
                 ->numeric()
                 ->required(),
+
 
 
             TextInput::make('total_price')
@@ -88,6 +93,7 @@ class OrderItemResource extends Resource
             Tables\Columns\TextColumn::make('quantity')->sortable(),
 
             Tables\Columns\TextColumn::make('unit_price')->sortable(),
+
             Tables\Columns\TextColumn::make('total_price')->sortable(),
         ])->actions([
             Tables\Actions\EditAction::make(),

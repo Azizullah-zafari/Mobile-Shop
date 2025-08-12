@@ -2,19 +2,24 @@
 
 namespace App\Filament\Widgets;
 
-use Filament\Widgets\Widget;
+use Filament\Widgets\StatsOverviewWidget as BaseWidget;
+use Filament\Widgets\StatsOverviewWidget\Card;
 use App\Models\Order;
+use App\Models\OrderItem;
+use Illuminate\Support\Facades\DB;
 
-class SalesOverview extends Widget
+class StatsOverview extends BaseWidget
 {
-    protected static string $view = 'filament.widgets.sales-overview';
-
-    public $totalSalesToday;
-
-    public function mount()
+    protected function getCards(): array
     {
-        $this->totalSalesToday = Order::whereDate('order_date', now())
-            ->where('status', 'completed')
-            ->sum('total_amount');
+        $totalSales = Order::sum('total_amount');
+        $totalOrders = Order::count();
+        $totalProfit = OrderItem::sum(DB::raw('(unit_price - cost_price) * quantity'));
+
+        return [
+            Card::make('کل فروش', number_format($totalSales) . ' AFN'),
+            Card::make('تعداد سفارشات', $totalOrders),
+            Card::make('کل سود', number_format($totalProfit) . ' AFN'),
+        ];
     }
 }

@@ -38,6 +38,9 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('price')
                     ->numeric()
                     ->required(),
+                Forms\Components\TextInput::make('cost_price')
+                    ->numeric()
+                    ->required(),
 
                 Forms\Components\TextInput::make('stock_quantity')
                     ->numeric()
@@ -62,6 +65,8 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('category.name')->label('Category')->sortable(),
                 Tables\Columns\TextColumn::make('price')->sortable()->toggleable(),
+                Tables\Columns\TextColumn::make('cost_price')->sortable()->toggleable(),
+
                 Tables\Columns\TextColumn::make('stock_quantity')->sortable()
             ])
             ->filters([
