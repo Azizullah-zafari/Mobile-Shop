@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\Filter;
 
 class ProductResource extends Resource
 {
@@ -60,10 +62,22 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('category.name')->label('Category')->sortable(),
                 Tables\Columns\TextColumn::make('price')->sortable()->toggleable(),
-                Tables\Columns\TextColumn::make('stock_quantity')->sortable()->toggleable(),
+                Tables\Columns\TextColumn::make('stock_quantity')->sortable()
             ])
             ->filters([
-                //
+                // فیلتر بر اساس دسته‌بندی (رابطه category)
+                SelectFilter::make('category_id')
+                    ->label('دسته‌بندی')
+                    ->relationship('category', 'name'),
+
+                // فیلتر بر اساس نام محصول (جستجوی متنی)
+                Filter::make('name')
+                    ->form([
+                        Forms\Components\TextInput::make('name')->label('نام محصول'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query->when($data['name'], fn($q) => $q->where('name', 'like', "%{$data['name']}%"));
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

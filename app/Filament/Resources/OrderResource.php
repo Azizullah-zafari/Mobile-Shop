@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\Filter;
 
 class OrderResource extends Resource
 {
@@ -75,6 +77,40 @@ class OrderResource extends Resource
 
             Tables\Columns\TextColumn::make('payment_status')->sortable(),
             Tables\Columns\TextColumn::make('total_amount')->sortable(),
+        ])->filters([
+            Filter::make('customer_name')
+                ->form([
+                    Forms\Components\TextInput::make('customer_name')->label('نام مشتری'),
+                ])
+                ->query(function ($query, array $data) {
+                    return $query->when(
+                        $data['customer_name'],
+                        fn($q) =>
+                        $q->whereHas(
+                            'customer',
+                            fn($q2) =>
+                            $q2->where('name', 'like', "%{$data['customer_name']}%")
+                        )
+                    );
+                }),
+
+            // فیلتر بر اساس وضعیت سفارش
+            SelectFilter::make('status')
+                ->label('وضعیت سفارش')
+                ->options([
+                    'pending' => 'Pending',
+                    'processing' => 'Processing',
+                    'completed' => 'Completed',
+                    'canceled' => 'Canceled',
+                ]),
+
+            // فیلتر بر اساس وضعیت پرداخت
+            SelectFilter::make('payment_status')
+                ->label('وضعیت پرداخت')
+                ->options([
+                    'unpaid' => 'Unpaid',
+                    'paid' => 'Paid',
+                ]),
         ])->actions([
             Tables\Actions\EditAction::make(),
             Tables\Actions\DeleteAction::make(),

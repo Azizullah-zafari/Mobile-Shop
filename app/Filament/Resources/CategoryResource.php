@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\Filter;
 
 class CategoryResource extends Resource
 {
@@ -47,6 +49,21 @@ class CategoryResource extends Resource
             Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
             Tables\Columns\TextColumn::make('parent.name')->label('Parent Category')->sortable(),
             Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
+        ])->filters([
+            Filter::make('name')
+                ->form([
+                    Forms\Components\TextInput::make('name')->label('نام دسته‌بندی'),
+                ])
+                ->query(function ($query, array $data) {
+                    return $query->when($data['name'], fn($q) => $q->where('name', 'like', "%{$data['name']}%"));
+                }),
+
+            // فیلتر بر اساس دسته‌بندی والد (رابطه parent)
+            SelectFilter::make('parent_id')
+                ->label('دسته‌بندی والد')
+                ->options(Category::all()->pluck('name', 'id')->toArray())
+                ->searchable(),
+
         ])->actions([
             Tables\Actions\EditAction::make(),
             Tables\Actions\DeleteAction::make(),

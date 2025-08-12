@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Filters\Filter;
 
 class CustomerResource extends Resource
 {
@@ -37,6 +38,22 @@ class CustomerResource extends Resource
             Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
             Tables\Columns\TextColumn::make('email')->sortable(),
             Tables\Columns\TextColumn::make('phone')->sortable(),
+        ])->filters([
+            Filter::make('name')
+                ->form([
+                    Forms\Components\TextInput::make('name')->label('نام'),
+                ])
+                ->query(function ($query, array $data) {
+                    return $query->when($data['name'], fn($q) => $q->where('name', 'like', "%{$data['name']}%"));
+                }),
+
+            Filter::make('email')
+                ->form([
+                    Forms\Components\TextInput::make('email')->label('ایمیل'),
+                ])
+                ->query(function ($query, array $data) {
+                    return $query->when($data['email'], fn($q) => $q->where('email', 'like', "%{$data['email']}%"));
+                }),
         ])->actions([
             Tables\Actions\EditAction::make(),
             Tables\Actions\DeleteAction::make(),
