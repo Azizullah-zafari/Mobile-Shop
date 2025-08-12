@@ -20,7 +20,7 @@ class OrderItemResource extends Resource
 {
     protected static ?string $model = OrderItem::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-ellipsis-horizontal';
 
 
     public static function form(Form $form): Form
@@ -57,8 +57,7 @@ class OrderItemResource extends Resource
 
             TextInput::make('total_price')
                 ->numeric()
-                ->required()
-                ->disabled(),
+                ->required(),
 
         ]);
     }
